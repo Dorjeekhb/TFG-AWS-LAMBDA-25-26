@@ -1,0 +1,24 @@
+Este Trabajo de Fin de Grado aborda la integración de mecanismos de
+ciberseguridad en videojuegos desarrollados con Unity y desplegados en
+infraestructuras distribuidas de Amazon Web Services (AWS). El objetivo
+principal es garantizar la protección de datos, la prevención de fraudes
+y la autenticación segura de los jugadores mediante servicios en la
+nube. Para ello, se implementan soluciones que abarcan desde la
+validación de licencias y puntuaciones hasta la detección de trampas
+basadas en métricas de juego. Además, se utilizan técnicas de control de
+versiones, autorización temporal y gestión de logs para reforzar la
+integridad de la aplicación.  
+
+El backend se construye sobre una arquitectura serverless con AWS
+Lambda, DynamoDB, API Gateway, Cognito, S3 y CloudWatch, lo que permite
+escalar de forma flexible y segura según la demanda. La propuesta ofrece
+un marco práctico que combina computación distribuida y seguridad
+informática, orientado a la protección de experiencias multijugador en
+tiempo real. Este enfoque busca contribuir al desarrollo de
+infraestructuras resilientes frente a ataques, garantizando la
+confianza de los usuarios y la sostenibilidad de los sistemas de juego
+en línea.
+
+{Palabras clave}
+ciberseguridad, videojuegos, AWS, computación distribuida, Unity, Lambda,
+DynamoDB, Cognito, seguridad en la nube, trampas

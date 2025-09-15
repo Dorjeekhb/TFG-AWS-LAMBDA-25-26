@@ -1,0 +1,25 @@
+
+This Final Degree Project explores the integration of cybersecurity
+mechanisms in video games developed with Unity and deployed on Amazon
+Web Services (AWS) distributed infrastructures. The main objective is to
+ensure data protection, fraud prevention, and secure player
+authentication through cloud-based services. The proposed solution
+includes strategies for license validation, score verification, and
+progress synchronization, as well as cheat detection based on gameplay
+metrics. Additional measures such as version control, temporary
+authorization, and secure logging are also implemented to strengthen
+application integrity.  
+
+The backend is built on a serverless architecture using AWS Lambda,
+DynamoDB, API Gateway, Cognito, S3, and CloudWatch, enabling scalable,
+flexible, and secure performance according to system demands. This
+project provides a practical framework that combines distributed
+computing and information security to protect real-time multiplayer
+experiences. The approach contributes to the development of resilient
+gaming infrastructures, enhancing user trust and ensuring the
+sustainability of online game systems.
+
+{Keywords}
+
+cybersecurity, videogames, AWS, distributed computing, Unity, Lambda,
+DynamoDB, Cognito, cloud security, cheats
