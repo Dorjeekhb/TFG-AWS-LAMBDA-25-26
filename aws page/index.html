@@ -1,0 +1,29 @@
+<input id="alias" placeholder="Alias (opcional)" />
+<button id="btn">Generar</button>
+<button id="copy" disabled>Copiar clave</button>
+<pre id="out"></pre>
+
+<script>
+  const API_URL = "https://0df567p9dl.execute-api.eu-north-1.amazonaws.com/";
+  const btn = document.getElementById('btn');
+  const copy = document.getElementById('copy');
+  const out = document.getElementById('out');
+  const alias = document.getElementById('alias');
+
+  btn.onclick = async () => {
+    btn.disabled = true; copy.disabled = true; out.textContent = 'Generando...';
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'generateKey', alias: alias.value || null })
+      });
+      const data = await res.json();
+      out.textContent = JSON.stringify(data, null, 2);
+      copy.disabled = !data.key;
+      copy.onclick = async () => { await navigator.clipboard.writeText(data.key); };
+    } catch (e) {
+      out.textContent = String(e);
+    } finally { btn.disabled = false; }
+  };
+</script>
