@@ -5,25 +5,69 @@
 
 <script>
   const API_URL = "https://0df567p9dl.execute-api.eu-north-1.amazonaws.com/";
-  const btn = document.getElementById('btn');
-  const copy = document.getElementById('copy');
-  const out = document.getElementById('out');
+  const btn   = document.getElementById('btn');
+  const copy  = document.getElementById('copy');
+  const out   = document.getElementById('out');
   const alias = document.getElementById('alias');
+  // const dl    = document.getElementById('dl'); // <-- Ya no es necesario
+
+  // Se elimina showDownload porque ya no necesitamos un solo botón
 
   btn.onclick = async () => {
-    btn.disabled = true; copy.disabled = true; out.textContent = 'Generando...';
+    btn.disabled = true;
+    copy.disabled = true;
+    out.innerHTML = 'Generando...'; // Usamos innerHTML para meter enlaces
+
     try {
       const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'generateKey', alias: alias.value || null })
       });
-      const data = await res.json();
-      out.textContent = JSON.stringify(data, null, 2);
-      copy.disabled = !data.key;
-      copy.onclick = async () => { await navigator.clipboard.writeText(data.key); };
+
+      const text = await res.text();
+      let data; 
+      try { data = JSON.parse(text); } catch { data = { raw: text }; }
+
+      if (!res.ok) {
+        out.textContent = `❌ Error HTTP ${res.status}\n\n` + JSON.stringify(data, null, 2);
+        return;
+      }
+      
+      // --------------------------------------
+      // ✅ CÓDIGO CORREGIDO PARA MOSTRAR LINKS
+      // --------------------------------------
+      if (data?.urls && data.urls.length > 0) {
+        let html = '<h2>Archivos disponibles:</h2><ul>';
+        data.urls.forEach(item => {
+            // Usamos fileName y url de la respuesta de Lambda
+            const name = item.fileName || item.key.split('/').pop();
+            const size = item.size ? ` (${(item.size / 1024 / 1024).toFixed(2)} MB)` : '';
+            html += `<li><a href="${item.url}" target="_blank" rel="noopener">⬇️ ${name}${size}</a></li>`;
+        });
+        html += '</ul>';
+        // Mostrar también la respuesta JSON completa debajo de los links
+        html += '<h2>Respuesta completa (JSON):</h2>' + `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        out.innerHTML = html;
+      } else {
+        out.textContent = '✅ Solicitud completada. No se encontraron archivos.';
+      }
+      // --------------------------------------
+      
+      // Copiar clave
+      if (data?.key) {
+        copy.disabled = false;
+        copy.onclick = async () => {
+          await navigator.clipboard.writeText(data.key);
+          copy.textContent = '✅ Copiada';
+          setTimeout(() => (copy.textContent = 'Copiar clave'), 1200);
+        };
+      }
+
     } catch (e) {
-      out.textContent = String(e);
-    } finally { btn.disabled = false; }
+      out.textContent = `❌ Error al conectar: ${String(e)}`;
+    } finally {
+      btn.disabled = false;
+    }
   };
 </script>
